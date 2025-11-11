@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>百度翻译配置验证工具</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #333;
+      margin-bottom: 10px;
+    }
+    .warning-box {
+      background: #fff3cd;
+      border-left: 4px solid #ff9800;
+      padding: 15px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #444;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+      box-sizing: border-box;
+      font-family: 'Courier New', monospace;
+    }
+    button {
+      background: #4CAF50;
+      color: white;
+      padding: 12px 30px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      font-weight: 600;
+      margin-right: 10px;
+    }
+    button:hover {
+      background: #45a049;
+    }
+    .result-section {
+      margin-top: 30px;
+      padding: 20px;
+      background: #f9f9f9;
+      border-radius: 8px;
+      border-left: 4px solid #4CAF50;
+    }
+    .error {
+      background: #ffebee;
+      border-left-color: #f44336;
+    }
+    .success {
+      background: #e8f5e9;
+      border-left-color: #4CAF50;
+    }
+    .info-item {
+      margin: 10px 0;
+      padding: 10px;
+      background: white;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+    }
+    .check-item {
+      margin: 8px 0;
+      padding: 8px;
+      border-radius: 4px;
+    }
+    .check-pass {
+      background: #e8f5e9;
+      color: #2e7d32;
+    }
+    .check-fail {
+      background: #ffebee;
+      color: #c62828;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔍 百度翻译配置验证工具</h1>
+    <p style="color: #666; margin-bottom: 20px;">检测配置中的隐藏问题</p>
+
+    <div class="warning-box">
+      <strong>⚠️ 54001 签名错误的常见原因：</strong>
+      <ul style="margin: 10px 0 0 20px;">
+        <li>APP ID 复制时包含了多余的空格或换行符</li>
+        <li>密钥复制时不完整或包含了额外字符</li>
+        <li>配置中有不可见的特殊字符</li>
+      </ul>
+    </div>
+
+    <form id="validateForm">
+      <div class="form-group">
+        <label for="appId">APP ID</label>
+        <input type="text" id="appId" placeholder="粘贴您的 APP ID" value="20251107002493001">
+      </div>
+
+      <div class="form-group">
+        <label for="secretKey">密钥</label>
+        <input type="text" id="secretKey" placeholder="粘贴您的密钥" value="ET4V_d46sun4a3kf3dr8">
+      </div>
+
+      <button type="button" onclick="validateConfig()">验证配置</button>
+      <button type="button" onclick="clearResults()">清除结果</button>
+    </form>
+
+    <div id="results"></div>
+  </div>
+
+  <script>
+    function validateConfig() {
+      const appIdInput = document.getElementById('appId');
+      const secretKeyInput = document.getElementById('secretKey');
+      
+      const appIdRaw = appIdInput.value;
+      const secretKeyRaw = secretKeyInput.value;
+
+      let html = '<div class="result-section">';
+      html += '<h3>📋 配置检测结果</h3>';
+
+      // 1. 检查是否为空
+      html += '<h4>1️⃣ 基础检查</h4>';
+      
+      if (!appIdRaw) {
+        html += '<div class="check-item check-fail">❌ APP ID 为空</div>';
+      } else {
+        html += '<div class="check-item check-pass">✅ APP ID 不为空</div>';
+      }
+
+      if (!secretKeyRaw) {
+        html += '<div class="check-item check-fail">❌ 密钥为空</div>';
+      } else {
+        html += '<div class="check-item check-pass">✅ 密钥不为空</div>';
+      }
+
+      // 2. 检查前后空格
+      html += '<h4>2️⃣ 空格检查</h4>';
+      
+      const appIdTrimmed = appIdRaw.trim();
+      const secretKeyTrimmed = secretKeyRaw.trim();
+
+      if (appIdRaw !== appIdTrimmed) {
+        html += `<div class="check-item check-fail">❌ APP ID 前后有空格（原长度: ${appIdRaw.length}, 清理后: ${appIdTrimmed.length}）</div>`;
+      } else {
+        html += '<div class="check-item check-pass">✅ APP ID 前后无空格</div>';
+      }
+
+      if (secretKeyRaw !== secretKeyTrimmed) {
+        html += `<div class="check-item check-fail">❌ 密钥前后有空格（原长度: ${secretKeyRaw.length}, 清理后: ${secretKeyTrimmed.length}）</div>`;
+      } else {
+        html += '<div class="check-item check-pass">✅ 密钥前后无空格</div>';
+      }
+
+      // 3. 检查长度
+      html += '<h4>3️⃣ 长度检查</h4>';
+      html += `<div class="info-item">APP ID 长度: ${appIdTrimmed.length} 字符</div>`;
+      html += `<div class="info-item">密钥长度: ${secretKeyTrimmed.length} 字符</div>`;
+
+      // 4. 检查特殊字符
+      html += '<h4>4️⃣ 特殊字符检查</h4>';
+      
+      const appIdHasSpecial = /[\s\n\r\t]/.test(appIdTrimmed);
+      const secretKeyHasSpecial = /[\s\n\r\t]/.test(secretKeyTrimmed);
+
+      if (appIdHasSpecial) {
+        html += '<div class="check-item check-fail">❌ APP ID 中间包含空格、换行或制表符</div>';
+      } else {
+        html += '<div class="check-item check-pass">✅ APP ID 中间无特殊字符</div>';
+      }
+
+      if (secretKeyHasSpecial) {
+        html += '<div class="check-item check-fail">❌ 密钥中间包含空格、换行或制表符</div>';
+      } else {
+        html += '<div class="check-item check-pass">✅ 密钥中间无特殊字符</div>';
+      }
+
+      // 5. 字符详细分析
+      html += '<h4>5️⃣ 详细字符分析</h4>';
+      
+      html += '<div class="info-item">';
+      html += '<strong>APP ID 字符码：</strong><br>';
+      html += Array.from(appIdTrimmed).map((char, i) => {
+        const code = char.charCodeAt(0);
+        return `[${i}]='${char}' (${code})`;
+      }).join(', ');
+      html += '</div>';
+
+      html += '<div class="info-item">';
+      html += '<strong>密钥字符码：</strong><br>';
+      html += Array.from(secretKeyTrimmed).map((char, i) => {
+        const code = char.charCodeAt(0);
+        return `[${i}]='${char}' (${code})`;
+      }).join(', ');
+      html += '</div>';
+
+      // 6. 标准格式检查
+      html += '<h4>6️⃣ 格式检查</h4>';
+      
+      const appIdFormat = /^[0-9]+$/.test(appIdTrimmed);
+      if (appIdFormat) {
+        html += '<div class="check-item check-pass">✅ APP ID 格式正确（纯数字）</div>';
+      } else {
+        html += '<div class="check-item check-fail">❌ APP ID 格式异常（应该是纯数字）</div>';
+      }
+
+      const secretKeyFormat = /^[A-Za-z0-9_-]+$/.test(secretKeyTrimmed);
+      if (secretKeyFormat) {
+        html += '<div class="check-item check-pass">✅ 密钥格式正确（字母、数字、下划线、连字符）</div>';
+      } else {
+        html += '<div class="check-item check-fail">❌ 密钥格式异常（包含非预期字符）</div>';
+      }
+
+      // 7. 清理后的值
+      html += '<h4>7️⃣ 清理后的配置值</h4>';
+      html += '<div class="info-item">';
+      html += `<strong>APP ID：</strong>${appIdTrimmed}<br>`;
+      html += `<strong>密钥：</strong>${secretKeyTrimmed}`;
+      html += '</div>';
+
+      // 8. 建议
+      html += '<h4>8️⃣ 建议操作</h4>';
+      
+      let hasIssues = false;
+      if (appIdRaw !== appIdTrimmed || secretKeyRaw !== secretKeyTrimmed || 
+          appIdHasSpecial || secretKeyHasSpecial || !appIdFormat || !secretKeyFormat) {
+        hasIssues = true;
+      }
+
+      if (hasIssues) {
+        html += '<div class="check-item check-fail">';
+        html += '⚠️ 发现配置问题！请按照以下步骤操作：<br><br>';
+        html += '1. 登录百度翻译开放平台：<a href="https://fanyi-api.baidu.com/manage/developer" target="_blank">https://fanyi-api.baidu.com/manage/developer</a><br>';
+        html += '2. 重新复制 APP ID 和密钥（注意不要选中多余的空格）<br>';
+        html += '3. 粘贴到扩展设置页面前，先粘贴到记事本检查一下<br>';
+        html += '4. 确保没有多余的空格、换行符等<br>';
+        html += '5. 重新保存配置并测试';
+        html += '</div>';
+      } else {
+        html += '<div class="check-item check-pass">';
+        html += '✅ 配置格式看起来没问题！<br><br>';
+        html += '如果仍然出现 54001 错误，请检查：<br>';
+        html += '1. APP ID 和密钥是否在百度翻译控制台中正确对应<br>';
+        html += '2. 账户是否正常（未被封禁、有余额等）<br>';
+        html += '3. 尝试重新生成一个新的密钥';
+        html += '</div>';
+      }
+
+      html += '</div>';
+      
+      document.getElementById('results').innerHTML = html;
+    }
+
+    function clearResults() {
+      document.getElementById('results').innerHTML = '';
+    }
+
+    // 自动验证
+    window.onload = function() {
+      const appId = document.getElementById('appId').value;
+      const secretKey = document.getElementById('secretKey').value;
+      if (appId && secretKey) {
+        validateConfig();
+      }
+    };
+  </script>
+</body>
+</html>
+

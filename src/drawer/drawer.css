@@ -1,0 +1,266 @@
+/* DeepSeek 翻译抽屉样式 */
+
+#deepseek-translator-drawer {
+  /* 基础布局 */
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: min(720px, 90vw);
+  height: 100vh;
+  
+  /* 外观 */
+  background: white;
+  box-shadow: -4px 0 12px rgba(0, 0, 0, 0.15);
+  z-index: 2147483647; /* 最大 z-index 值 */
+  
+  /* 动画 */
+  transform: translateX(100%);
+  transition: transform 300ms ease-in-out;
+  
+  /* 布局 */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+#deepseek-translator-drawer.open {
+  transform: translateX(0);
+}
+
+/* 抽屉头部 */
+#deepseek-translator-drawer .drawer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid #e0e0e0;
+  background: #f5f5f5;
+}
+
+#deepseek-translator-drawer .drawer-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+  flex: 1;
+}
+
+#deepseek-translator-drawer .close-button {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 24px;
+  color: #666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+#deepseek-translator-drawer .close-button:hover {
+  background: #e0e0e0;
+  color: #333;
+}
+
+/* 抽屉内容区 */
+#deepseek-translator-drawer .drawer-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0;
+}
+
+/* 原文区域 */
+#deepseek-translator-drawer .source-section {
+  padding: 20px;
+  background: #f9f9f9;
+  border-bottom: 2px solid #e0e0e0;
+  min-height: 100px;
+}
+
+#deepseek-translator-drawer .section-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #666;
+  margin: 0 0 12px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+#deepseek-translator-drawer .source-text {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #555;
+  font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+/* 译文区域 */
+#deepseek-translator-drawer .translation-section {
+  padding: 20px;
+  background: white;
+  min-height: 150px;
+}
+
+#deepseek-translator-drawer .translation-text {
+  font-size: 16px;
+  line-height: 1.8;
+  color: #333;
+  font-family: 'PingFang SC', 'Microsoft YaHei', 'Hiragino Sans GB', sans-serif;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+/* 加载状态 */
+#deepseek-translator-drawer .loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  color: #666;
+}
+
+#deepseek-translator-drawer .loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f0f0f0;
+  border-top-color: #4A90E2;
+  border-radius: 50%;
+  animation: deepseek-spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes deepseek-spin {
+  to { transform: rotate(360deg); }
+}
+
+#deepseek-translator-drawer .loading-text {
+  font-size: 14px;
+  color: #999;
+}
+
+/* 错误提示 */
+#deepseek-translator-drawer .error {
+  padding: 20px;
+  background: #fff5f5;
+  border-left: 4px solid #f56565;
+  color: #c53030;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+#deepseek-translator-drawer .error-icon {
+  display: inline-block;
+  margin-right: 8px;
+  font-weight: bold;
+}
+
+/* 滚动条样式 */
+#deepseek-translator-drawer .drawer-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+#deepseek-translator-drawer .drawer-content::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+#deepseek-translator-drawer .drawer-content::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+#deepseek-translator-drawer .drawer-content::-webkit-scrollbar-thumb:hover {
+  background: #a1a1a1;
+}
+
+/* 抽屉底部 */
+#deepseek-translator-drawer .drawer-footer {
+  padding: 12px 20px;
+  border-top: 1px solid #e0e0e0;
+  background: #f9f9f9;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* 翻译工具选择器 */
+#deepseek-translator-drawer .provider-selector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#deepseek-translator-drawer .provider-selector label {
+  font-size: 13px;
+  color: #666;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+#deepseek-translator-drawer .provider-select {
+  padding: 6px 12px;
+  font-size: 13px;
+  border: 1px solid #d0d0d0;
+  border-radius: 4px;
+  background: white;
+  color: #333;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s;
+  min-width: 120px;
+}
+
+#deepseek-translator-drawer .provider-select:hover {
+  border-color: #4A90E2;
+}
+
+#deepseek-translator-drawer .provider-select:focus {
+  border-color: #4A90E2;
+  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.1);
+}
+
+/* 配置提示样式 */
+#deepseek-translator-drawer .config-prompt {
+  padding: 20px;
+  background: #fff9e6;
+  border-left: 4px solid #f59e0b;
+  color: #92400e;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+#deepseek-translator-drawer .config-prompt-title {
+  font-weight: 600;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+}
+
+#deepseek-translator-drawer .config-prompt-message {
+  margin-bottom: 12px;
+  color: #78350f;
+}
+
+#deepseek-translator-drawer .go-to-config-btn {
+  padding: 8px 16px;
+  background: #f59e0b;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+#deepseek-translator-drawer .go-to-config-btn:hover {
+  background: #d97706;
+}
+

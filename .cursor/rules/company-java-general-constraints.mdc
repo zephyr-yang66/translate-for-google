@@ -1,0 +1,12 @@
+---
+level: 00
+description: Java 普适性约束。
+globs: **/src/main/java/**/*.java
+alwaysApply: Auto Attached
+---
+
+- 所有的类和方法都必须有适当的 JavaDoc 注释，特别是公共 API 和复杂逻辑部分。
+- 优先使用 @Lombok 注解来简化样板代码，但要确保生成的代码符合项目规范。
+- 做 JavaBean 对象转换时，不要使用各种的 BeanUtil 类进行对象属性拷贝，封装良好的构造函数或静态工厂方法使用 getter/setter 方法创建对象。
+- 创建枚举类时，应该检查项目中是否存在相同语义的枚举，如果存在，由用户确认是否使用现有的枚举类。
+- 在规则和现有的代码规范冲突时，你应该优先遵守规则。

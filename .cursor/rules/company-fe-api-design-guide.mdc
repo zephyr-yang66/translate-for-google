@@ -1,0 +1,212 @@
+---
+level: 10
+description: 公司级通用 Common Admin 中后台页面开发， API 调用与处理规范。
+globs: **/*.{ts,js}
+---
+
+# API 调用与错误处理规范
+
+> 项目 `@/utils/common/request.ts` 返回 `[error, data]` 元组格式,全局已处理错误提示
+
+## 🎯 核心规则
+
+```yaml
+返回格式: [error, data] 元组(错误优先)
+全局处理: HTTP错误、业务错误、Token过期已自动弹出提示
+组件规范:
+  - 总是使用: const [error, data] = await apiCall()
+  - 总是检查: if (error) return
+  - 不要重复提示错误(全局已处理)
+  - data 是实际数据,不需要 data.data
+```
+
+## 类型定义
+
+```typescript
+// 返回类型
+type IResponseArr<T> = [IErrorInfo | undefined, T | undefined];
+
+// 错误结构
+interface IErrorInfo {
+  code: string;
+  message: string;
+  subCode?: string;  // 特殊错误码,如 'auth-check-error'
+}
+
+// 响应结构
+interface IResponseData<T> {
+  code: string;      // '10000' = 成功
+  msg: string;
+  subMsg?: string;
+  subCode?: string;
+  data: T;
+}
+```
+
+## 标准模板(必须遵循)
+
+```typescript
+// 列表查询
+const loadData = async () => {
+  loading.value = true;
+  const [error, data] = await getUserList(params);
+  loading.value = false;
+
+  if (error) return;  // 错误已全局提示
+
+  userList.value = data.list;
+  pagination.total = data.total;
+};
+
+// 创建/更新
+const handleSubmit = async () => {
+  try {
+    await formRef.value?.validate();
+  } catch (error) {
+    return;
+  }
+
+  submitLoading.value = true;
+  const [error, data] = await createUser(formData);
+  submitLoading.value = false;
+
+  if (error) return;  // 错误已全局提示
+
+  message.success('创建成功');
+  router.back();
+};
+
+// 删除
+const handleDelete = async (record: UserInfo) => {
+  const [error, data] = await deleteUser(record.id);
+  if (error) return;
+
+  message.success('删除成功');
+  loadData();
+};
+
+// 详情加载
+const loadDetail = async () => {
+  if (!userId.value) return;
+
+  loading.value = true;
+  const [error, data] = await getUserDetail(userId.value);
+  loading.value = false;
+
+  if (error) {
+    router.back();  // 可选:错误时返回列表页
+    return;
+  }
+
+  userInfo.value = data;
+};
+```
+
+## 特殊场景
+
+```typescript
+// 场景1: 根据错误码自定义处理
+const [error, response] = await updateConfig(data);
+
+if (error?.subCode === 'CONFIG_CONFLICT') {
+  showConflictModal(error.message);
+  return;
+}
+
+if (error) return;  // 其他错误已全局处理
+
+// 场景2: 同时检查error和response.success
+const [error, response] = await submitForm(formData);
+
+if (!error && response?.success) {
+  message.success('提交成功');
+  emit('success');
+} else {
+  formRef.value?.resetFields();  // 失败时重置表单
+}
+
+// 场景3: 手动提取错误信息(优先级)
+const errorMsg = error?.message || response?.subMsg || response?.msg || '操作失败';
+```
+
+## 常见错误
+
+```typescript
+// 错误1: 不使用解构
+const response = await getUserList(params);
+if (response.success) { ... }
+
+// 错误2: 忘记检查error
+const [error, data] = await getUserList(params);
+userList.value = data.list;  // data可能是undefined
+
+// 错误3: 重复提示
+const [error, data] = await createUser(formData);
+if (error) {
+  message.error(error.message);
+  return;
+}
+
+// 错误4: 访问data.data
+userList.value = data.data.list;
+
+// 错误5: loading未关闭
+loading.value = true;
+const [error, data] = await getUserList(params);
+if (error) return;
+loading.value = false;
+```
+
+## API 定义规范
+
+```typescript
+// api/user.ts
+import { request } from '@/utils/common/request';
+
+export const getUserList = (params: UserListParams) => {
+  return request<PageData<UserInfo>>({
+    url: '/api/user/list',
+    method: 'get',
+    params,
+  });
+};
+
+export const createUser = (data: UserFormData) => {
+  return request({
+    url: '/api/user',
+    method: 'post',
+    data,
+  });
+};
+
+export const updateUser = (id: number, data: UserFormData) => {
+  return request({
+    url: `/api/user/${id}`,
+    method: 'put',
+    data,
+  });
+};
+
+export const deleteUser = (id: number) => {
+  return request({
+    url: `/api/user/${id}`,
+    method: 'delete',
+  });
+};
+```
+
+## 检查清单
+
+```yaml
+每次API调用必须包含:
+  loading状态管理(开始/结束)
+  错误检查(if (error) return)
+  成功提示(message.success)
+  数据使用(data,不是data.data)
+
+特别注意:
+  - Token过期: 全局已处理,组件只需return
+  - 业务错误: 全局已提示,组件只需return
+  - 网络错误: 全局已提示,组件只需return
+  - Loading关闭: 无论成功失败都要关闭
+```

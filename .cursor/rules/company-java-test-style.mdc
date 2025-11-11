@@ -1,0 +1,13 @@
+---
+level: 00
+description: 约束单元测试与集成测试类的命名与实践规范。
+globs: **/src/test/java/**/*Test.java
+alwaysApply: Auto Attached
+---
+
+- 测试类命名应以被测试类名加 "Test" 结尾，例如 UserServiceTest、OrderControllerTest。
+- 单元测试应聚焦小单元（方法/类），使用 Mockito 等库模拟外部依赖，避免依赖真实 I/O。
+- 集成测试需明确使用 @SpringBootTest 或测试配置，并保证数据库/外部依赖的隔离或替代实现。
+- 测试方法命名应体现场景和预期（given_when_then 或 shouldXxxWhenYyy）。
+- 使用断言库（如 AssertJ）写清晰断言，避免过度耦合实现细节。
+- 测试应可重复执行且不依赖执行顺序，必要时使用 @BeforeEach/@AfterEach 做环境准备与清理。

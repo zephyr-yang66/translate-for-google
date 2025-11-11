@@ -1,0 +1,8 @@
+---
+alwaysApply: true
+---
+# .cursor/rules/agents.mdc
+
+[include]
+# 引用项目中定义的智能体清单文件
+AGENTS.md

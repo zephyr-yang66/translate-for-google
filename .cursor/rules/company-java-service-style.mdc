@@ -1,0 +1,13 @@
+---
+level: 00
+description: 约束服务层接口（Service）的命名与职责规范。
+globs: **/src/main/java/**/*Service.java
+alwaysApply: Auto Attached
+---
+
+- 服务层接口命名应以 "Service" 结尾，例如 UserService、OrderService。
+- Service 接口应定义业务能力的抽象，而不暴露底层实现细节（如 Mapper、DAO）。
+- 接口方法签名应使用业务相关的 DTO/VO/Param 类型，避免暴露实体层实现细节。
+- Service 接口应保持小而清晰，单个接口的职责不宜过多（关注单一业务聚合）。
+- 异常处理应在 Service 层以有意义的业务异常抛出，避免直接抛出 SQLException 等底层异常。
+- 文档注释（Javadoc）应描述方法的业务语义、参数和返回值含义。

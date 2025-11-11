@@ -1,0 +1,8 @@
+---
+level: 00
+description: Java 。
+globs: **/src/main/java/**/*.java,**/src/test/java/**/*.java, **/src/main/resources/**/*.xml
+alwaysApply: Always
+---
+
+- Java 文件类命名规范应该参照 [Java 文件命名规范](./company-java-class-naming-style.mdc)，具体规则请查看对应规则文件。

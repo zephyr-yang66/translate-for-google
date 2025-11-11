@@ -1,0 +1,16 @@
+---
+level: 00
+description: 约束各个领域 Java 类的命名规范（汇总）。
+globs: **/src/main/java/**/*.java
+alwaysApply: Auto Attached
+---
+
+- 领域层实体类命名应以 "DO" 结尾，例如 UserDO、OrderDO。
+- 数据访问层 Mapper 接口命名应以 "Mapper" 结尾，例如 UserMapper、OrderMapper。
+- 服务层接口命名应以 "Service" 结尾，例如 UserService、OrderService。
+- 服务层实现类命名应以 "ServiceImpl" 结尾，例如 UserServiceImpl、OrderServiceImpl。
+- 控制器类命名应以 "Controller" 结尾，例如 UserController、OrderController。
+- 异常类命名应以 "Exception" 结尾，例如 UserNotFoundException、InvalidOrderException。
+- 工具类命名应以 "Util" 结尾，例如 DateUtil、StringUtil。
+- 常量类命名应以 "Constants" 结尾，例如 AppConstants、ErrorConstants。
+- 测试类命名应以被测试类名加 "Test" 结尾，例如 UserServiceTest、OrderControllerTest。

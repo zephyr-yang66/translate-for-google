@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DeepSeek 翻译设置</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      max-width: 700px;
+      width: 100%;
+      padding: 40px;
+    }
+
+    h1 {
+      color: #2d3748;
+      font-size: 28px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .subtitle {
+      color: #718096;
+      font-size: 14px;
+      margin-bottom: 32px;
+    }
+
+    .section {
+      margin-bottom: 32px;
+    }
+
+    .section-title {
+      color: #2d3748;
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .info-box {
+      background: #ebf8ff;
+      border-left: 4px solid #3182ce;
+      padding: 16px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      color: #2c5282;
+      line-height: 1.6;
+    }
+
+    .warning-box {
+      background: #fffaf0;
+      border-left: 4px solid #ed8936;
+      padding: 16px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      color: #7c2d12;
+      line-height: 1.6;
+    }
+
+    .form-group {
+      margin-bottom: 24px;
+    }
+
+    label {
+      display: block;
+      color: #4a5568;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .label-required::after {
+      content: ' *';
+      color: #e53e3e;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    select {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: all 0.3s;
+      font-family: inherit;
+    }
+
+    input[type="text"]:focus,
+    input[type="password"]:focus,
+    select:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .hint {
+      color: #718096;
+      font-size: 12px;
+      margin-top: 6px;
+      display: flex;
+      align-items: start;
+      gap: 6px;
+    }
+
+    .link {
+      color: #3182ce;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .link:hover {
+      text-decoration: underline;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 12px;
+      margin-top: 32px;
+    }
+
+    button {
+      padding: 12px 32px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-family: inherit;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      flex: 1;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-secondary {
+      background: #f7fafc;
+      color: #4a5568;
+      border: 2px solid #e2e8f0;
+    }
+
+    .btn-secondary:hover {
+      background: #edf2f7;
+    }
+
+    .status-message {
+      margin-top: 20px;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      display: none;
+    }
+
+    .status-message.success {
+      background: #f0fdf4;
+      color: #166534;
+      border: 1px solid #86efac;
+      display: block;
+    }
+
+    .status-message.error {
+      background: #fef2f2;
+      color: #991b1b;
+      border: 1px solid #fca5a5;
+      display: block;
+    }
+
+    .radio-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .radio-option {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .radio-option:hover {
+      border-color: #667eea;
+      background: #f7fafc;
+    }
+
+    .radio-option input[type="radio"] {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
+
+    .radio-option.active {
+      border-color: #667eea;
+      background: #ebf4ff;
+    }
+
+    .icon {
+      font-size: 24px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>
+      <span class="icon">🔧</span>
+      翻译设置
+    </h1>
+    <p class="subtitle">配置您的翻译API，开始使用免费翻译服务</p>
+
+    <div class="warning-box">
+      <strong>🔐 安全提示：</strong> 您的API密钥仅保存在本地浏览器中，不会被上传到任何服务器。请妥善保管您的API密钥。
+    </div>
+
+    <form id="settingsForm">
+      <!-- API选择 -->
+      <div class="section">
+        <div class="section-title">
+          <span>🌐</span>
+          选择翻译服务
+        </div>
+        <div class="radio-group">
+          <label class="radio-option" data-api="baidu">
+            <input type="radio" name="apiProvider" value="baidu" checked>
+            <div>
+              <strong>百度翻译 API</strong>
+              <div class="hint">✅ 推荐 | 每月200万字符免费 | 翻译质量优秀 | 速度快</div>
+            </div>
+          </label>
+          <label class="radio-option" data-api="libretranslate">
+            <input type="radio" name="apiProvider" value="libretranslate">
+            <div>
+              <strong>LibreTranslate</strong>
+              <div class="hint">✅ 完全免费 | 无使用限制 | 开源方案 | 无需注册</div>
+            </div>
+          </label>
+          <label class="radio-option" data-api="deepseek">
+            <input type="radio" name="apiProvider" value="deepseek">
+            <div>
+              <strong>DeepSeek AI</strong>
+              <div class="hint">💰 付费服务 | 翻译质量最好 | ¥0.002/次</div>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- 百度翻译配置 -->
+      <div class="section" id="baiduConfig">
+        <div class="section-title">
+          <span>🔑</span>
+          百度翻译API配置
+        </div>
+        <div class="info-box">
+          <strong>如何获取API密钥：</strong><br>
+          1. 访问 <a href="https://fanyi-api.baidu.com/" target="_blank" class="link">百度翻译开放平台</a><br>
+          2. 注册并登录账号<br>
+          3. 进入「管理控制台」→「开发者信息」<br>
+          4. 获取 APP ID 和密钥<br>
+          5. 完成身份认证可获得每月200万字符免费额度
+        </div>
+        <div class="form-group">
+          <label for="baiduAppId" class="label-required">百度 APP ID</label>
+          <input type="text" id="baiduAppId" placeholder="请输入您的百度翻译 APP ID">
+          <div class="hint">💡 示例：20231107001234567</div>
+        </div>
+        <div class="form-group">
+          <label for="baiduSecretKey" class="label-required">百度密钥 (Secret Key)</label>
+          <input type="password" id="baiduSecretKey" placeholder="请输入您的百度翻译密钥">
+          <div class="hint">💡 点击密钥输入框右侧的眼睛图标可查看密钥</div>
+        </div>
+      </div>
+
+      <!-- LibreTranslate配置 -->
+      <div class="section" id="libretranslateConfig" style="display: none;">
+        <div class="section-title">
+          <span>🌍</span>
+          LibreTranslate配置
+        </div>
+        <div class="info-box">
+          <strong>关于LibreTranslate：</strong><br>
+          LibreTranslate是完全免费的开源翻译服务，无需注册API密钥即可使用。<br>
+          您可以使用官方公共实例，或自建服务器获得更好的性能。
+        </div>
+        <div class="form-group">
+          <label for="libretranslateUrl">API地址（可选）</label>
+          <input type="text" id="libretranslateUrl" placeholder="https://libretranslate.com" value="https://libretranslate.com">
+          <div class="hint">💡 使用默认地址即可，或填入您自建服务器的地址</div>
+        </div>
+        <div class="form-group">
+          <label for="libretranslateApiKey">API密钥（可选）</label>
+          <input type="password" id="libretranslateApiKey" placeholder="如使用公共实例可留空">
+          <div class="hint">💡 公共实例无需API密钥，自建服务器可能需要</div>
+        </div>
+      </div>
+
+      <!-- DeepSeek配置 -->
+      <div class="section" id="deepseekConfig" style="display: none;">
+        <div class="section-title">
+          <span>🤖</span>
+          DeepSeek AI配置
+        </div>
+        <div class="warning-box">
+          <strong>⚠️ 付费服务提示：</strong><br>
+          DeepSeek API是付费服务，每次翻译约需¥0.002元。<br>
+          建议优先使用免费的百度翻译或LibreTranslate。
+        </div>
+        <div class="info-box">
+          <strong>如何获取API密钥：</strong><br>
+          1. 访问 <a href="https://platform.deepseek.com/" target="_blank" class="link">DeepSeek开放平台</a><br>
+          2. 注册并登录账号<br>
+          3. 进入「API Keys」页面<br>
+          4. 创建新的API密钥
+        </div>
+        <div class="form-group">
+          <label for="deepseekApiKey" class="label-required">DeepSeek API密钥</label>
+          <input type="password" id="deepseekApiKey" placeholder="sk-...">
+          <div class="hint">💡 以 sk- 开头的密钥</div>
+        </div>
+      </div>
+
+      <!-- 高级设置 -->
+      <div class="section">
+        <div class="section-title">
+          <span>⚙️</span>
+          高级设置
+        </div>
+        <div class="form-group">
+          <label for="enableCache">
+            <input type="checkbox" id="enableCache" checked style="width: auto; margin-right: 8px;">
+            启用翻译缓存（减少API调用）
+          </label>
+          <div class="hint">💡 相同文本不会重复调用API，推荐开启</div>
+        </div>
+        <div class="form-group">
+          <label for="enableFallback">
+            <input type="checkbox" id="enableFallback" checked style="width: auto; margin-right: 8px;">
+            启用API备用方案（一个失败自动切换到下一个）
+          </label>
+          <div class="hint">💡 提高服务可用性，推荐开启</div>
+        </div>
+      </div>
+
+      <!-- 按钮 -->
+      <div class="button-group">
+        <button type="submit" class="btn-primary">💾 保存设置</button>
+        <button type="button" id="testBtn" class="btn-secondary">🧪 测试连接</button>
+      </div>
+
+      <div id="statusMessage" class="status-message"></div>
+    </form>
+  </div>
+
+  <script src="options.js"></script>
+</body>
+</html>
+

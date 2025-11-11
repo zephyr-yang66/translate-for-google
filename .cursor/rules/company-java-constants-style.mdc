@@ -1,0 +1,12 @@
+---
+level: 00
+description: 约束常量类（Constants）的命名与组织规范。
+globs: **/src/main/java/**/*Constants.java
+alwaysApply: Auto Attached
+---
+
+- 常量类命名应以 "Constants" 结尾，例如 AppConstants、ErrorConstants。
+- 常量类应为 final 类并提供私有构造方法以防止实例化。
+- 常量字段应为 public static final，且命名使用全部大写加下划线的风格（MY_CONSTANT）。
+- 常量应按功能分组并提供清晰注释，避免将不相关常量堆在同一个类中。
+- 对于配置类常量，优先使用配置中心或配置类而不是硬编码常量在代码中。

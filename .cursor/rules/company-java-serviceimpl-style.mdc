@@ -1,0 +1,13 @@
+---
+level: 00
+description: 约束服务层实现类（ServiceImpl）的命名、注入与事务规范。
+globs: **/src/main/java/**/*ServiceImpl.java
+alwaysApply: Auto Attached
+---
+
+- 使用 @RequiredArgsConstructor 注解 + final字段 来注入依赖。
+- 服务实现应加上 @Service 注解或框架约定的注解进行声明，使用 @Slf4j 注解简化日志记录。
+- 事务边界应在实现类上或方法上使用 @Transactional 标注，并明确 readOnly 与 rollbackFor 策略。
+- 实现类应只包含业务实现逻辑，调用底层 Mapper/Repository 时保持错误处理和转换清晰。
+- 记录日志时应使用类级别的 Logger，并避免打印敏感信息。
+- 对于数据库层的访问，直接使用 Repository/Mapper，不要在 ServiceImpl 中重复封装简单的 CRUD 操作。

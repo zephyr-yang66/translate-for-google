@@ -1,0 +1,24 @@
+{
+  "name": "deepseek-translator",
+  "version": "1.0.0",
+  "description": "DeepSeek 翻译浏览器扩展 - 英译中",
+  "type": "module",
+  "scripts": {
+    "dev": "vite build --watch --mode development",
+    "build": "npm run icons && tsc && npm run build:background && npm run build:content && npm run build:options && npm run copy:html",
+    "build:background": "vite build --config vite.config.background.ts",
+    "build:content": "vite build --config vite.config.content.ts",
+    "build:options": "vite build --config vite.config.options.ts",
+    "copy:html": "cp src/options.html dist/options.html",
+    "preview": "vite preview",
+    "icons": "node scripts/convert-icon.cjs"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.268",
+    "@types/node": "^20.12.7",
+    "sharp": "^0.34.5",
+    "typescript": "^5.4.5",
+    "vite": "^5.2.10",
+    "vite-plugin-web-extension": "^4.1.4"
+  }
+}

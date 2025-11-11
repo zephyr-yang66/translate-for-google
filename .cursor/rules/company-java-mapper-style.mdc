@@ -1,0 +1,15 @@
+---
+level: 00
+description: 约束数据访问层 Mapper 接口的命名与设计规范。
+globs: **/src/main/java/**/*Mapper.java
+alwaysApply: Auto Attached
+---
+
+- Mapper 接口应只包含与数据库交互的抽象方法，不包含业务逻辑。
+- 禁止在 Mapper 中使用 @Select、@Insert 等注解直接编写 SQL，使用 XML 映射文件或注解方式分离 SQL。
+- 方法命名应清晰表达操作，常见前缀包括 insert、update、delete、select、count、list。
+- 接口方法应尽量使用强类型参数和返回值（实体类、DTO），避免返回或接受原始的 Map 或 Object。
+- 使用 MyBatis XML 或注解映射时，SQL 语句应保持可读、避免拼接字符串，使用参数占位符防止注入。
+- Mapper 对应的 XML 或注解 SQL 与接口方法应保持一一对应，命名和参数顺序应一致。
+- 对于复杂查询，优先使用带说明性的 Query/Param 对象而不是多个散列参数。
+- Mapper 不应依赖 Spring 的业务层注入，保持薄且可测试。
