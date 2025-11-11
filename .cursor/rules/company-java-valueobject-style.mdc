@@ -1,9 +1,0 @@
----
-level: 00
-description: 设置视图对象设计以及实现的标准。
-globs: **/src/main/java/**/*VO.java
-alwaysApply: Auto Attached
----
-
-- 如果类字段存在 LocalDate 类型字段，则给字段增加 `@JsonFormat(pattern = "yyyy-MM-dd")` 注解
-- 如果类字段存在 LocalDateTime 类型字段，则给字段增加 `@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")` 注解
